@@ -25,3 +25,14 @@ class HotelModel(database.Model):
             'rate': self.rate,
             'city': self.city
         }
+    
+    @classmethod
+    def find_hotel(cls, hotel_id):
+        hotel = cls.query.filter_by(hotel_id=hotel_id).first()
+
+        if hotel: return hotel
+        return None
+    
+    def save_hotel(self):
+        database.session.add(self)
+        database.session.commit()

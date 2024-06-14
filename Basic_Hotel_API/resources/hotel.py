@@ -37,26 +37,21 @@ class Hotel(Resource):
     arguments.add_argument('rate', type=float)
     arguments.add_argument('city')
 
-    ## Methods
-    def find_hotel(hotel_id):
-        for hotel in hotels:
-            if hotel['hotel_id'] == hotel_id: return hotel
-        return None
-
     ## API Routes 
     def get(self, hotel_id):
-            hotel = Hotel.find_hotel(hotel_id)
+            hotel = HotelModel.find_hotel(hotel_id)
 
             if hotel: return hotel
             return {'message': 'Hotel not found!'}, 404
 
     def post(self, hotel_id):
-        data = Hotel.arguments.parse_args()
-        obj_hotel = HotelModel(hotel_id, **data)
-        new_hotel = obj_hotel.json()
+        if HotelModel.find_hotel(hotel_id): return { 'messege': 'Hotel id ({}) already exists!'.format(hotel_id) }, 400
 
-        hotels.append(new_hotel)
-        return new_hotel, 201
+        data = Hotel.arguments.parse_args()
+        hotel = HotelModel(hotel_id, **data)
+        hotel.save_hotel()
+
+        return hotel.json(), 201
 
     def put(self, hotel_id):
         data = Hotel.arguments.parse_args()
