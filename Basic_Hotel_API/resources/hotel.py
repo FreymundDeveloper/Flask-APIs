@@ -1,43 +1,19 @@
 from flask_restful import Resource, reqparse
 from models.hotel import HotelModel
 
-hotels = [
-    {
-        'hotel_id': 'alpha',
-        'name': 'Alpha Hotel',
-        'stars': 4.3,
-        'rate': 420.41,
-        'city': 'Los Angeles'
-    },
-    {
-        'hotel_id': 'beta',
-        'name': 'Beta Hotel',
-        'stars': 5.0,
-        'rate': 627.85,
-        'city': 'Los Angeles'
-    },
-    {
-        'hotel_id': 'omega',
-        'name': 'Omega Hotel',
-        'stars': 2.1,
-        'rate': 190.52,
-        'city': 'Villa Cubas'
-    },
-]
-
 class Hotels(Resource):
-    ## API Routes 
+    ## API Route Methods
     def get(self):
         return {'hotels': [hotel.json() for hotel in HotelModel.query.all()]}
     
 class Hotel(Resource):
     arguments = reqparse.RequestParser()
-    arguments.add_argument('name')
+    arguments.add_argument('name', type=str, required=True, help="This field (name) is required.")
     arguments.add_argument('stars', type=float)
-    arguments.add_argument('rate', type=float)
-    arguments.add_argument('city')
+    arguments.add_argument('rate', type=float, required=True, help="This field (rate) is required.")
+    arguments.add_argument('city', type=str, required=True, help="This field (city) is required.")
 
-    ## API Routes 
+    ## API Route Methods
     def get(self, hotel_id):
             hotel = HotelModel.find_hotel(hotel_id)
 
@@ -49,26 +25,40 @@ class Hotel(Resource):
 
         data = Hotel.arguments.parse_args()
         hotel = HotelModel(hotel_id, **data)
-        hotel.save_hotel()
-
-        return hotel.json(), 201
+        
+        try:
+            hotel.save_hotel()
+            return hotel.json(), 201
+        except:
+            return { 'message': 'An internal error ocurred trying to save data.'}, 500
 
     def put(self, hotel_id):
         data = Hotel.arguments.parse_args()
         hotel_found = HotelModel.find_hotel(hotel_id)
 
         if hotel_found: 
-            hotel_found.update_hotel(**data)
-            hotel_found.save_hotel()
-            return hotel_found.json(), 200
+            try:
+                hotel_found.update_hotel(**data)
+                hotel_found.save_hotel()
+                return hotel_found.json(), 200
+            except:
+                return { 'message': 'An internal error ocurred trying to update data.'}, 500
         
         hotel = HotelModel(hotel_id, **data)
-        hotel.save_hotel()
-        return hotel.json(), 201
+
+        try:
+            hotel.save_hotel()
+            return hotel.json(), 201
+        except:
+            return { 'message': 'An internal error ocurred trying to save data.'}, 500
 
     def delete(self, hotel_id):
         hotel = HotelModel.find_hotel(hotel_id)
         if hotel:
-            hotel.delete_hotel()
-            return { 'message': 'Hotel deleted!' }
+            try:
+                hotel.delete_hotel()
+                return { 'message': 'Hotel deleted!' }
+            except:
+                return { 'message': 'An internal error ocurred trying to delete data.'}, 500
+            
         return { 'message': 'Hotel not found!' }, 404
