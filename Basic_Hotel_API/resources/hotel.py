@@ -28,7 +28,7 @@ hotels = [
 class Hotels(Resource):
     ## API Routes 
     def get(self):
-        return {'hotels': hotels}
+        return {'hotels': [hotel.json() for hotel in HotelModel.query.all()]}
     
 class Hotel(Resource):
     arguments = reqparse.RequestParser()
