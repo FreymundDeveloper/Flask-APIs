@@ -1,6 +1,13 @@
+import hmac
+
+from flask_jwt_extended import create_access_token
 from flask_restful import Resource, reqparse
 from models.user import UserModel
-    
+
+arguments = reqparse.RequestParser()
+arguments.add_argument('login', type=str, required=True, help="This field (login) is required.")
+arguments.add_argument('password', type=str, required=True, help="This field (password) is required.")    
+
 class User(Resource):
     ## API Route Methods (/users)
     def get(self, user_id):
@@ -23,10 +30,6 @@ class User(Resource):
 class UserReagister(Resource):
     ## API Route Methods (/register)
     def post(self):
-        arguments = reqparse.RequestParser()
-        arguments.add_argument('login', type=str, required=True, help="This field (login) is required.")
-        arguments.add_argument('password', type=str, required=True, help="This field (password) is required.")
-
         data = arguments.parse_args()
 
         if UserModel.find_by_login(data['login']):
@@ -35,4 +38,15 @@ class UserReagister(Resource):
         user = UserModel(**data)
         user.save_user()
         return { 'message': 'User created successfully!' }, 201
-        
+    
+class UserLogin(Resource):
+
+    @classmethod
+    def post(cls):
+        data = arguments.parse_args()   
+        user = UserModel.find_by_login(data['login'])
+
+        if user and hmac.compare_digest(user.password, data['password']):
+            access_token = create_access_token(identity=user.user_id)
+            return { 'access_token': access_token }, 200
+        return { 'message': 'The username or password is incorrect!' }, 401
