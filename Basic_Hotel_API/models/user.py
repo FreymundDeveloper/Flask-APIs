@@ -25,6 +25,13 @@ class UserModel(database.Model):
         if user: return user
         return None
     
+    @classmethod
+    def find_by_login(cls, login):
+        user = cls.query.filter_by(login=login).first()
+
+        if user: return user
+        return None
+    
     def save_user(self):
         database.session.add(self)
         database.session.commit()
