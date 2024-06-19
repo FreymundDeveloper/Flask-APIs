@@ -2,7 +2,6 @@ from flask_restful import Resource, reqparse
 from models.hotel import HotelModel
 from utils.query_build_module import normalize_path_params, hotel_query_build
 from flask_jwt_extended import jwt_required
-import sqlite3
 
 ## Path Params
 path_params = reqparse.RequestParser()
