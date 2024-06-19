@@ -1,24 +1,8 @@
 from flask_restful import Resource, reqparse
 from models.hotel import HotelModel
+from utils.query_build_module import normalize_path_params, hotel_query_build
 from flask_jwt_extended import jwt_required
 import sqlite3
-
-## Default Params Values
-def normalize_path_params(city = None, stars_min = 0, stars_max = 5, rate_min = 0, 
-                          rate_max = 10000, limit = 50, offset = 0):
-    if city: 
-        return {
-            'stars_min': stars_min, 'stars_max': stars_max,
-            'rate_min': rate_min, 'rate_max': rate_max,
-            'city': city,
-            'limit': limit, 'offset': offset,
-        }
-    
-    return {
-        'stars_min': stars_min, 'stars_max': stars_max,
-        'rate_min': rate_min, 'rate_max': rate_max,
-        'limit': limit, 'offset': offset,
-    }
 
 ## Path Params
 path_params = reqparse.RequestParser()
@@ -36,22 +20,7 @@ class Hotels(Resource):
         data = path_params.parse_args()
         data_validate = {key: value for key, value in data.items() if value}
         params = normalize_path_params(**data_validate)
-
-        if params.get('city', ''):
-            search_result = (HotelModel.query
-                            .filter(HotelModel.city == params['city'])
-                            .filter(HotelModel.stars >= params['stars_min'], HotelModel.stars <= params['stars_max'])
-                            .filter(HotelModel.rate >= params['rate_min'], HotelModel.rate <= params['rate_max'])
-                            .order_by(HotelModel.stars.desc())
-                            .offset(params['offset']).limit(params['limit'])
-                            .all())
-        else:
-            search_result = (HotelModel.query
-                            .filter(HotelModel.stars >= params['stars_min'], HotelModel.stars <= params['stars_max'])
-                            .filter(HotelModel.rate >= params['rate_min'], HotelModel.rate <= params['rate_max'])
-                            .order_by(HotelModel.stars.desc())
-                            .offset(params['offset']).limit(params['limit'])
-                            .all())
+        search_result = hotel_query_build(params)
 
         return {'hotels': [hotel.json() for hotel in search_result]}
     
