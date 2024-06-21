@@ -8,7 +8,7 @@ class HotelModel(database.Model):
     stars = database.Column(database.Float(precision=1))
     rate = database.Column(database.Float(precision=2))
     city = database.Column(database.String(40))
-    website_id = database.Column(database.Integer, database.ForeignKey('website.website_id'))
+    website_id = database.Column(database.Integer, database.ForeignKey('websites.website_id'))
 
     def __init__(self, hotel_id, name, stars, rate, city, website_id):
         self.hotel_id = hotel_id
