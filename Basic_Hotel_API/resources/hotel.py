@@ -29,6 +29,7 @@ class Hotel(Resource):
     arguments.add_argument('stars', type=float)
     arguments.add_argument('rate', type=float, required=True, help="This field (rate) is required.")
     arguments.add_argument('city', type=str, required=True, help="This field (city) is required.")
+    arguments.add_argument('website_id', type=int, required=True, help="This field (website_id) is required.")
 
     ## API Route Methods
     def get(self, hotel_id):

@@ -27,7 +27,7 @@ api.add_resource(UserReagister, '/register')
 api.add_resource(UserLogin, '/login')
 api.add_resource(UserLogout, '/logout')
 api.add_resource(Websites, '/websites')
-api.add_resource(Website, '/websites/<string:website_id>')
+api.add_resource(Website, '/websites/<string:url>')
 
 ## Token Validates
 

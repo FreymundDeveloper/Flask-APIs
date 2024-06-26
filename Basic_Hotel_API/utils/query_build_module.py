@@ -1,5 +1,7 @@
 from models.hotel import HotelModel
 
+## -> Hotel Model Content
+
 ## Default "/hotels" Params Values
 def normalize_path_params(city = None, stars_min = 0, stars_max = 5, rate_min = 0, 
                           rate_max = 10000, limit = 50, offset = 0):
@@ -36,3 +38,6 @@ def hotel_query_build(params):
                         .all())
         
     return search_result
+
+## -> User Model Content
+## -> Website Model Content
