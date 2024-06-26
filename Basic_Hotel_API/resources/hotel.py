@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse
 from models.hotel import HotelModel
+from models.website import WebsiteModel
 from utils.query_build_module import normalize_path_params, hotel_query_build
 from flask_jwt_extended import jwt_required
 
@@ -44,12 +45,14 @@ class Hotel(Resource):
 
         data = Hotel.arguments.parse_args()
         hotel = HotelModel(hotel_id, **data)
+
+        if not WebsiteModel.find_by_id(data['website_id']): return { 'message': 'Invalid website ID!' }, 400
         
         try:
             hotel.save_hotel()
             return hotel.json(), 201
         except:
-            return { 'message': 'An internal error ocurred trying to save data.'}, 500
+            return { 'message': 'An internal error ocurred trying to save data.' }, 500
 
     @jwt_required()
     def put(self, hotel_id):
