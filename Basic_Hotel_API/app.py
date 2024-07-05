@@ -4,7 +4,7 @@ from flask_jwt_extended import JWTManager
 
 from blacklist import BLACKLIST
 from resources.hotel import Hotels, Hotel
-from resources.user import User, UserReagister, UserLogin, UserLogout
+from resources.user import User, UserReagister, UserLogin, UserLogout, UserConfirm
 from resources.website import Websites, Website
 
 ## App configs
@@ -28,6 +28,7 @@ api.add_resource(UserLogin, '/login')
 api.add_resource(UserLogout, '/logout')
 api.add_resource(Websites, '/websites')
 api.add_resource(Website, '/websites/<string:url>')
+api.add_resource(UserConfirm, '/confirmation/<int:user_id>')
 
 ## Token Validates
 

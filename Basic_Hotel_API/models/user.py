@@ -6,16 +6,19 @@ class UserModel(database.Model):
     user_id = database.Column(database.Integer, primary_key=True)
     login = database.Column(database.String(40))
     password = database.Column(database.String(40))
+    actived = database.Column(database.Boolean, default=False)
 
 
-    def __init__(self, login, password):
+    def __init__(self, login, password, actived):
         self.login = login
         self.password = password
+        self.actived = actived
 
     def json(self):
         return {
             'user_id': self.user_id,
-            'login': self.login
+            'login': self.login,
+            'actived': self.actived
         }
     
     @classmethod
