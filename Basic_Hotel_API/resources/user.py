@@ -1,4 +1,5 @@
 import hmac
+import traceback
 
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
 from flask_restful import Resource, reqparse
@@ -8,6 +9,7 @@ from models.user import UserModel
 arguments = reqparse.RequestParser()
 arguments.add_argument('login', type=str, required=True, help="This field (login) is required.")
 arguments.add_argument('password', type=str, required=True, help="This field (password) is required.")
+arguments.add_argument('email', type=str)
 arguments.add_argument('actived', type=bool)    
 
 class User(Resource):
@@ -34,13 +36,26 @@ class UserReagister(Resource):
     ## API Route Methods (/register)
     def post(self):
         data = arguments.parse_args()
+        if not data.get('email') or data.get('email') is None:
+            return { "message": "The field (email) cannot be left blank!"}, 400
+        
+        if UserModel.find_by_email(data['email']):
+            return { 'message': 'The email ({}) already exists.'.format(data['email']) }, 400
 
         if UserModel.find_by_login(data['login']):
-            return { 'message': 'The login ({}) already exists.'.format(data['login']) }
+            return { 'message': 'The login ({}) already exists.'.format(data['login']) }, 400
         
         user = UserModel(**data)
         user.actived = False
-        user.save_user()
+
+        try: 
+            user.save_user()
+            user.send_confirmation_email()
+        except:
+            user.delete_user()
+            traceback.print_exc()
+            return { 'message': 'Internal error detected!' }, 500
+        
         return { 'message': 'User created successfully!' }, 201
     
 class UserLogin(Resource):

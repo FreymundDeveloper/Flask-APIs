@@ -2,10 +2,12 @@ from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
+from config_mail import ConfigMail
 from blacklist import BLACKLIST
 from resources.hotel import Hotels, Hotel
 from resources.user import User, UserReagister, UserLogin, UserLogout, UserConfirm
 from resources.website import Websites, Website
+from utils.mail_builder import mail
 
 ## App configs
 
@@ -14,6 +16,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flaskapis.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'ThisIsAKey'
 app.config['JWT_BLACKLIST_ENABLED'] = True
+
+## Mailtrap Configs
+
+app.config.from_object(ConfigMail)
+mail.init_app(app)
 
 api = Api(app)
 jwt = JWTManager(app)
