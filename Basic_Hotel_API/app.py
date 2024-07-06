@@ -13,6 +13,7 @@ from utils.mail_builder import mail
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flaskapis.db'
+## app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://FreyDeveloper:R4a_9!mTiz@:Wew@FreyDeveloper.mysql.pythonanywhere-services.com/FreyDeveloper$default'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'ThisIsAKey'
 app.config['JWT_BLACKLIST_ENABLED'] = True
