@@ -1,6 +1,7 @@
 import hmac
 import traceback
 
+from flask import make_response, render_template
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
 from flask_restful import Resource, reqparse
 from blacklist import BLACKLIST
@@ -92,4 +93,7 @@ class UserConfirm(Resource):
         
         user.actived = True
         user.save_user()
-        return { 'message': 'User Id ({}) confirmed successfully!'.format(user_id) }, 200
+        ##return { 'message': 'User Id ({}) confirmed successfully!'.format(user_id) }, 200
+
+        header = {'Content-type': 'text/html'}
+        return make_response(render_template('user_notify.html', email=user.email, user=user.login), 200, header)
