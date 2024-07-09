@@ -1,6 +1,6 @@
 # Flask-APIs
 
-Repository used for building and testing APIs based on Flask.
+Repository used for building and testing APIs based on Flask, integrated with Email Delivery with Mailtrap.
 
 Some tecnologies used:
 
@@ -8,16 +8,15 @@ Some tecnologies used:
 * Flask(3.x);
 * API Restful;
 * SQL Alchemy;
-* SQL(SQLite and PostgreSQL).
+* SQL(SQLite and PostgreSQL);
+* Bootstrap(5.x);
+* Html.
 
 ## Running the APIs
 
-First, ensure that your Pip is updated, then create a Virtual Ambience and install the dependencies.
+First, make sure your Pip is up to date and Python is the correct version, then create a Virtual Environment and install the dependencies. If sending emails is not working, the Mailtrap instance has possibly been deactivated.
 
 ```bash
-# Update Pip Version
-$ python.exe -m pip install --upgrade pip
-
 # Build a Virtual Ambience
 $ python -m venv <AmbienceName>
 
