@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
@@ -21,6 +22,10 @@ app.config['JWT_BLACKLIST_ENABLED'] = True
 
 app.config.from_object(ConfigMail)
 mail.init_app(app)
+
+## Cors Config
+
+CORS(app)
 
 api = Api(app)
 jwt = JWTManager(app)
