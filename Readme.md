@@ -1,6 +1,6 @@
 # Flask-APIs
 
-Repository used for building and testing APIs based on Flask, integrated with Email Delivery with Mailtrap.
+Repository used for building and testing APIs based on Flask, integrated with Email Delivery with Mailtrap and hosted on a PythonAnywhere(disabled due to timeout issues) server.
 
 Some tecnologies used:
 
@@ -30,4 +30,7 @@ $ .\<AmbienceName>\Scripts\activate.bat
 
 # Stop Virtual Ambience
 $ deactivate
+
+# Update Pip Version(if necessary)
+$ python.exe -m pip install --upgrade pip
 ```
