@@ -37,9 +37,11 @@ $ deactivate
 $ python.exe -m pip install --upgrade pip
 ```
 
-## Running on Cloud
+## Deploy/Running on Cloud
 
 Make sure you have an instance running on the Google Cloud platform and also have the Shell SDK installed. After that, replace the content of “app.py” with the content of “gcloud_app.txt” and execute the commands and their settings below:
+
+**Obs**: Have a Virtual Ambient ready and running before running the commands below.
 
 ```bash
 # Start Shell SDK
