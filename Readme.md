@@ -1,6 +1,6 @@
 # Flask-APIs
 
-Repository used for building and testing APIs based on Flask, integrated with Email Delivery with Mailtrap and hosted on a PythonAnywhere(disabled due to timeout issues) server.
+Repository used for building and testing APIs based on Flask, integrated with Email Delivery with Mailtrap and hosted on a PythonAnywhere and Google Cloud(disabled due to timeout issues) servers.
 
 Some tecnologies used:
 
@@ -10,7 +10,9 @@ Some tecnologies used:
 * SQL Alchemy;
 * SQL(SQLite and PostgreSQL);
 * Bootstrap(5.x);
-* Html.
+* Html;
+* Docker;
+* Google Cloud.
 
 ## Running the APIs
 
@@ -33,4 +35,16 @@ $ deactivate
 
 # Update Pip Version(if necessary)
 $ python.exe -m pip install --upgrade pip
+```
+
+## Running on Cloud
+
+Make sure you have an instance running on the Google Cloud platform and also have the Shell SDK installed. After that, replace the content of “app.py” with the content of “gcloud_app.txt” and execute the commands and their settings below:
+
+```bash
+# Start Shell SDK
+$ gcloud init
+
+# Execute the Deploy to server
+$ gcloud run deploy --source . 
 ```
