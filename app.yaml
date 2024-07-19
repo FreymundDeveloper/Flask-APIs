@@ -1,0 +1,2 @@
+runtime: python39
+entrypoint: gunicorn -b :$PORT Basic_Hotel_API.app:app
