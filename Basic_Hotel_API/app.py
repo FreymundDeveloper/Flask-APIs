@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
+from utils.create_manual_psql import create_database_psql
 from config_mail import ConfigMail
 from blacklist import BLACKLIST
 from resources.hotel import Hotels, Hotel
@@ -13,7 +14,13 @@ from utils.mail_builder import mail
 ## App configs
 
 app = Flask(__name__)
+
+## SQLite DB Option
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flaskapis.db'
+
+## PostgreSQL DB Option
+## app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:<password>@localhost:5432/flaskapis'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'ThisIsAKey'
 app.config['JWT_BLACKLIST_ENABLED'] = True
@@ -57,6 +64,10 @@ def access_token_invalid(jwt_header, jwt_payload):
 if __name__ == '__main__':
     from sql_alchemy import database
     database.init_app(app)
+
+    ## Call create psql database
+    ## create_database_psql()
+
     with app.app_context():
         database.create_all()
     app.run(debug=True)
