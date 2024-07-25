@@ -16,7 +16,7 @@ Some tecnologies used:
 
 ## Running the APIs
 
-First, make sure your Pip is up to date and Python is the correct version, then create a Virtual Environment and install the dependencies. If sending emails is not working, the Mailtrap instance has possibly been deactivated.
+First of all, create a ".env" file in the root of the application (based on the ".env.example" model). Now, make sure that your Pip is updated and that Python is the correct version, then Create a Virtual Environment and install dependencies. If sending emails is not working, the Mailtrap instance has possibly been disabled.
 
 ```bash
 # Build a Virtual Ambience
