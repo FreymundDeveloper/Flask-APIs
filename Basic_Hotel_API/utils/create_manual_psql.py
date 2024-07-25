@@ -1,13 +1,16 @@
 import psycopg2
 from psycopg2 import sql
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def create_database_psql():
-    db_host = os.getenv('DB_HOST', 'localhost')
-    db_port = os.getenv('DB_PORT', '5432')
-    db_user = os.getenv('DB_USER', 'postgres')
-    db_password = os.getenv('DB_PASSWORD', '<password>')
-    db_name = os.getenv('DB_NAME', 'flaskapis')
+    db_host = os.getenv('DB_HOST', os.getenv('LOCALHOST'))
+    db_port = os.getenv('DB_PORT', os.getenv('PORT'))
+    db_user = os.getenv('DB_USER', os.getenv('USER'))
+    db_password = os.getenv('DB_PASSWORD', os.getenv('PASSWORD'))
+    db_name = os.getenv('DB_NAME', os.getenv('DATABASE'))
 
     try:
         conn = psycopg2.connect(

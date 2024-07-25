@@ -1,7 +1,9 @@
+import os
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
+from dotenv import load_dotenv
 
 from utils.create_manual_psql import create_database_psql
 from config_mail import ConfigMail
@@ -13,16 +15,18 @@ from utils.mail_builder import mail
 
 ## App configs
 
+load_dotenv()
+
 app = Flask(__name__)
 
 ## SQLite DB Option
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flaskapis.db'
 
 ## PostgreSQL DB Option
-## app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:<password>@localhost:5432/flaskapis'
+## app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{os.getenv('USER')}:{os.getenv('PASSWORD')}@{os.getenv('LOCALHOST')}:{os.getenv('PORT')}/{os.getenv('DATABASE')}"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = 'ThisIsAKey'
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 app.config['JWT_BLACKLIST_ENABLED'] = True
 
 ## Mailtrap Configs
